@@ -72,7 +72,7 @@ The secondary target is **Figure 7**: mean gradient magnitude of the first convo
 **Architecture.** 110-layer ResNet (6N+2, N=18): three groups of 18 residual blocks with 16/32/64 filters, a Conv-BN-ReLU stem, global average pool, and linear classifier.
 
 **Key differences from the authors' Torch 7 code:**
-- *Skip-connection projection*: the original uses average pooling + zero-channel padding (Option A); this re-implementation uses a 1×1 strided convolution + BN (Option B), a learnable projection with slightly more capacity.
+- *Skip-connection projection*: the original uses average pooling + zero-channel padding (Option A); this re-implementation uses a 1×1 strided convolution + batch normalization (Option B), a learnable projection with slightly more capacity.
 - *Gate placement*: the original training loop sets a `gate` boolean on each module before every mini-batch. Here the Bernoulli draw is placed inside `StochasticBlock.forward()`, making each block self-contained with no behavioral change.
 
 **Training.** SGD with Nesterov momentum (0.9), weight decay 1e-4, initial lr=0.1 divided by 10 at epochs 250 and 375, batch size 128, 500 epochs, 45k/5k train/val split, standard CIFAR-10 augmentation (random horizontal flip + 4-pixel random crop).
