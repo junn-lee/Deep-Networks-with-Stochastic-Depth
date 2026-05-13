@@ -122,7 +122,7 @@ Running the above produces test errors matching or exceeding the paper:
 | Stochastic depth | 5.25% | 5.15% |
 | Relative improvement ↓ | 18.1% | 15.5% |
 
-The gradient magnitude plot (Figure 7) reproduces the paper's key mechanistic finding: after the first learning-rate drop at epoch 250, the constant-depth baseline's gradients collapse to near zero and stay there, while stochastic depth maintains healthy gradients through epoch 500.
+The gradient magnitude plot reproduces the paper's key mechanistic finding: after the first learning-rate drop at epoch 250, the constant-depth baseline's gradients collapse to near zero and stay there, while stochastic depth maintains healthy gradients through epoch 500.
 
 An additional per-class confusion analysis (not in the original paper) reveals that stochastic depth's gains are not uniform — they concentrate on semantically ambiguous class pairs (cat/dog: −0.9%, truck/automobile: −1.0%) while slightly degrading on visually distinctive classes (ship: +0.8%). This is consistent with a variance-reduction interpretation of the implicit ensemble effect.
 
