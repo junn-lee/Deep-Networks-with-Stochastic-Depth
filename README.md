@@ -59,7 +59,7 @@ $$p_\ell = 1 - \frac{\ell}{L}(1 - p_L)$$
 │       ├── 00_setup.ipynb     # Mount Drive, create folders, upload code
 │       ├── 01_fig3.ipynb      # Train stochastic and baseline for Figure 3
 │       ├── 02_fig7.ipynb      # Train with gradient logging for Figure 7
-│       ├── 03_fig8.ipynb      # p_L sweep and depth heatmap (Figure 8)
+│       ├── 03_fig8.ipynb      # p_L sweep and depth heatmap (Figure 8) — not run due to compute constraints
 │       ├── 04_plot.ipynb      # Generate all figures from training logs
 │       └── 05_confusion.ipynb # Run confusion matrix analysis
 ├── data/
@@ -83,7 +83,7 @@ $$p_\ell = 1 - \frac{\ell}{L}(1 - p_L)$$
 **Architecture.** 110-layer ResNet (6N+2, N=18): three groups of 18 residual blocks with 16/32/64 filters, a Conv-BN-ReLU stem, global average pool, and linear classifier.
 
 **Key differences from the authors' Torch 7 code:**
-- *Skip-connection projection*: the original uses average pooling + zero-channel padding (Option A); this re-implementation uses a 1×1 strided convolution + batch normalization (Option B), a learnable projection with slightly more capacity.
+- *Skip-connection projection*: the original uses average pooling + zero-channel padding (Option A); this re-implementation uses a 1×1 strided convolution + BN (Option B), a learnable projection with slightly more capacity.
 - *Gate placement*: the original training loop sets a `gate` boolean on each module before every mini-batch. Here the Bernoulli draw is placed inside `StochasticBlock.forward()`, making each block self-contained with no behavioral change.
 
 **Training.** SGD with Nesterov momentum (0.9), weight decay 1e-4, initial lr=0.1 divided by 10 at epochs 250 and 375, batch size 128, 500 epochs, 45k/5k train/val split, standard CIFAR-10 augmentation (random horizontal flip + 4-pixel random crop).
@@ -102,36 +102,11 @@ pip install torch torchvision scikit-learn matplotlib
 
 Python 3.10+, PyTorch 2.0+, CUDA recommended.
 
-### Option A: Google Colab (recommended)
-
 1. Open `code/notebooks/00_setup.ipynb` and run all cells to mount Drive and upload code.
-2. Open `code/notebooks/01_fig3.ipynb`. Run the **stochastic** training cell (Tab 1), then open a second tab and run the **baseline** cell (Tab 2). Each run takes ~8 hours on A100.
+2. Open `code/notebooks/01_fig3.ipynb`. Run the **stochastic** training cell, then run the **baseline** cell. Each run takes ~8 hours on A100.
 3. Open `code/notebooks/02_fig7.ipynb` and repeat for Figure 7 (adds `--log_grad` flag).
 4. Once training is complete, open `code/notebooks/04_plot.ipynb` to generate figures.
 5. Optionally run `code/notebooks/05_confusion.ipynb` for per-class error analysis.
-
-### Option B: Local / cluster
-
-```bash
-# Stochastic depth
-python code/train.py --dataset cifar10 --p_L 0.5 --survival_mode linear \
-    --epochs 500 --test_every_epoch --out_dir results/fig3/stochastic
-
-# Constant depth baseline
-python code/train.py --dataset cifar10 --p_L 1.0 --survival_mode constant \
-    --epochs 500 --test_every_epoch --out_dir results/fig3/baseline
-
-# Evaluate best checkpoint
-python code/evaluate.py \
-    --checkpoint results/fig3/stochastic/checkpoints/cifar10_pL0.5_modelinear_n18_best.pt \
-    --dataset cifar10 --p_L 0.5
-
-# Confusion analysis
-python code/confusion_analysis.py \
-    --baseline   results/fig3/baseline/checkpoints/cifar10_pL1.0_modeconstant_n18_best.pt \
-    --stochastic results/fig3/stochastic/checkpoints/cifar10_pL0.5_modelinear_n18_best.pt \
-    --out_dir results/confusion
-```
 
 **Compute requirement:** A GPU with ≥16GB VRAM is recommended. Training one 500-epoch run takes ~8 hours on an A100.
 
@@ -163,6 +138,7 @@ Stochastic depth is straightforward to re-implement and robust to the minor arch
 
 - Huang, G., Sun, Y., Liu, Z., Sedra, D., & Weinberger, K.Q. (2016). Deep networks with stochastic depth. *ECCV 2016*. [arXiv:1603.09382](https://arxiv.org/abs/1603.09382)
 - He, K., Zhang, X., Ren, S., & Sun, J. (2016). Deep residual learning for image recognition. *CVPR 2016*. [arXiv:1512.03385](https://arxiv.org/abs/1512.03385)
+- Paszke, A., et al. (2019). PyTorch: An imperative style, high-performance deep learning library. *NeurIPS 2019*.
 - Original Torch 7 implementation: [github.com/yueatsprograms/Stochastic_Depth](https://github.com/yueatsprograms/Stochastic_Depth)
 
 ---
