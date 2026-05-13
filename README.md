@@ -138,11 +138,10 @@ Stochastic depth is straightforward to re-implement and robust to the minor arch
 
 - Huang, G., Sun, Y., Liu, Z., Sedra, D., & Weinberger, K.Q. (2016). Deep networks with stochastic depth. *ECCV 2016*. [arXiv:1603.09382](https://arxiv.org/abs/1603.09382)
 - He, K., Zhang, X., Ren, S., & Sun, J. (2016). Deep residual learning for image recognition. *CVPR 2016*. [arXiv:1512.03385](https://arxiv.org/abs/1512.03385)
-- Paszke, A., et al. (2019). PyTorch: An imperative style, high-performance deep learning library. *NeurIPS 2019*.
 - Original Torch 7 implementation: [github.com/yueatsprograms/Stochastic_Depth](https://github.com/yueatsprograms/Stochastic_Depth)
 
 ---
 
 ## 9. Acknowledgements
 
-This project was completed as a final project for **CS 4782: Probabilistic Machine Learning** at Cornell University (Spring 2025). The course provided the problem setting and peer-review structure that shaped the scope and evaluation of this work. The original authors' Torch 7 code was used as a reference for verifying implementation correctness.
+This project was completed as a final project for **CS 4782: Deep Learning** at Cornell University (Spring 2025). The course provided the problem setting and peer-review structure that shaped the scope and evaluation of this work. The original authors' Torch 7 code was used as a reference for verifying implementation correctness.
