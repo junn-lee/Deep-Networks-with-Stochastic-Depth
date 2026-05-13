@@ -1,0 +1,23 @@
+# Data
+data/cifar-10-batches-py/
+data/*.tar.gz
+data/*.zip
+
+# Checkpoints (large binary files — store on Drive, not Git)
+results/checkpoints/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# macOS
+.DS_Store
+
+# Logs (keep JSON logs but ignore raw stdout logs)
+*.log
