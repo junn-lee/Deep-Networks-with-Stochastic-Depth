@@ -18,14 +18,25 @@ The paper's main contribution is a simple training procedure: randomly drop enti
 
 ## 2. Chosen Result
 
-The primary target is **Figure 3 (left)**: per-epoch test error and training loss for a 110-layer ResNet on CIFAR-10 over 500 epochs — the paper's central empirical claim.
+The primary target is **Figure 3 (left)** from the paper: per-epoch test error and training loss for a 110-layer ResNet on CIFAR-10 over 500 epochs — the paper's central empirical claim. It corresponds to the first two columns of **Table 1** in the paper (CIFAR-10+ results: 6.41% constant depth, 5.25% stochastic depth).
 
-The secondary target is **Figure 7**: mean gradient magnitude of the first convolutional layer, demonstrating that stochastic depth keeps early-layer gradients healthy throughout training while the constant-depth baseline collapses after the first learning-rate drop.
+The secondary target is **Figure 7**: mean gradient magnitude of the first convolutional layer, demonstrating that stochastic depth keeps early-layer gradients healthy throughout training while the constant-depth baseline collapses after the first learning-rate drop. This provides empirical support for the paper's core theoretical motivation — that randomly shortening the network during training reduces the vanishing gradient problem described in **Equation 4** (the linear decay rule):
 
-| Model | Paper | Re-impl. |
+$$p_\ell = 1 - \frac{\ell}{L}(1 - p_L)$$
+
+| Model | Paper (Table 1) | Re-impl. |
 |---|---|---|
 | Constant depth | 6.41% | 5.81% |
 | Stochastic depth | 5.25% | 5.15% |
+
+**Original paper figures:**
+
+<p float="left">
+  <img src="results/figures/fig3_paper.png" width="48%"/>
+  <img src="results/figures/fig7_paper.png" width="48%"/>
+</p>
+
+**Re-implementation:**
 
 <p float="left">
   <img src="results/figures/figure3.png" width="48%"/>
@@ -152,10 +163,11 @@ Stochastic depth is straightforward to re-implement and robust to the minor arch
 
 - Huang, G., Sun, Y., Liu, Z., Sedra, D., & Weinberger, K.Q. (2016). Deep networks with stochastic depth. *ECCV 2016*. [arXiv:1603.09382](https://arxiv.org/abs/1603.09382)
 - He, K., Zhang, X., Ren, S., & Sun, J. (2016). Deep residual learning for image recognition. *CVPR 2016*. [arXiv:1512.03385](https://arxiv.org/abs/1512.03385)
+- Paszke, A., et al. (2019). PyTorch: An imperative style, high-performance deep learning library. *NeurIPS 2019*.
 - Original Torch 7 implementation: [github.com/yueatsprograms/Stochastic_Depth](https://github.com/yueatsprograms/Stochastic_Depth)
 
 ---
 
 ## 9. Acknowledgements
 
-This project was completed as a final project for **CS 4782: Deep Learning** at Cornell University (Spring 2025). The course provided the problem setting and peer-review structure that shaped the scope and evaluation of this work. The original authors' Torch 7 code was used as a reference for verifying implementation correctness.
+This project was completed as a final project for **CS 4782: Probabilistic Machine Learning** at Cornell University (Spring 2025). The course provided the problem setting and peer-review structure that shaped the scope and evaluation of this work. The original authors' Torch 7 code was used as a reference for verifying implementation correctness.
